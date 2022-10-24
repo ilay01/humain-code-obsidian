@@ -1,0 +1,3 @@
+> Mithilfe von lernenden Algorithmen könnten wir ein viel tieferes Verständnis in der Welt erlangen, indem sie uns Musterzeigen, die uns sonst in der Überfülle der Informationen verborgen blieben. 
+
+> Kritiker befürchten hingegen, die neue TEchnologie werde uns vor allem mehr Überwachungs- und Manipulationsmöglichkeiten bescheren, ohnehin bestehende Monopole vergrößern, die Arbeitslosigkeit erhöhen, dazu beitragen, dass demokratische Verfahren immer mehr unterlaufen werden, das Ende des Solidarprinzips in den Versicherungen mit sich bringen und die soziale Spaltung vertiefen. 

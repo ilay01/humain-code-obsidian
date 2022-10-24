@@ -1,0 +1,1 @@
+Magazin #1 Sommer 2022
