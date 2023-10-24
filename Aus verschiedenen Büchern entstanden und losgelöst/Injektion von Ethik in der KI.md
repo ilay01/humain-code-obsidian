@@ -1,0 +1,1 @@
+wird erwähnt in [[MOC - Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen]]
