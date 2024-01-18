@@ -1,0 +1,265 @@
+{
+  "main": {
+    "id": "477d1f56c7290fec",
+    "type": "split",
+    "children": [
+      {
+        "id": "1477375d600595c3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "18cd0089c1f2bfb0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Digitaler Wandel & Ethik/EDAP - Schema/Vernünftige und ethisch erstrebenswerte Entscheidungen zu treffen bleibt dem Menschen vorbehalten.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "d8e824c8db39c1f5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Digitaler Wandel & Ethik/Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen/Grenzen einer prinzipienbasierten Ethik für KI.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "b09bb6acef0cb30d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Maschinen ethisch bauen.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "e55aec822772fe16",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Gewissheit ist nicht allein in Daten zu finden.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "a23574c0e0c62b73",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.5.3"
+              }
+            }
+          },
+          {
+            "id": "56419f8351a5d96a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Ethische Deliberation.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "2ee7fc1a45f30e9d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Normative Ethik.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "16b5307c90d199fd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Gewissheit ist nicht allein in Daten zu finden.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f86a0fa18b65b177",
+    "type": "split",
+    "children": [
+      {
+        "id": "040deec718b3f9c3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9a09f24d243d05ba",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7287a920d64ef314",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7ffbca32c2352065",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 588.5
+  },
+  "right": {
+    "id": "b9da638112fa3715",
+    "type": "split",
+    "children": [
+      {
+        "id": "be6236e6ffd9c050",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f561b5b6174352d9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Gewissheit ist nicht allein in Daten zu finden.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "1f730dd6708cdf77",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Gewissheit ist nicht allein in Daten zu finden.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "44cc512cbd008606",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "3b22bc895eadf0e1",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Gewissheit ist nicht allein in Daten zu finden.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "a23574c0e0c62b73",
+  "lastOpenFiles": [
+    "Beispiel warum ML Algorthmen nicht ethisch handeln können.md",
+    "Maschinen ethisch bauen.md",
+    "Digitaler Wandel & Ethik/Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen/Grenzen einer prinzipienbasierten Ethik für KI.md",
+    "Digitaler Wandel & Ethik/Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen/KI ist frei von Rechenschaftspflicht.md",
+    "Digitaler Wandel & Ethik/Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen/Fürsorgepflicht und das Bestehen gemeinsamer Ziele.md",
+    "Digitaler Wandel & Ethik/Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen/Fehlen von bewährten Methoden.md",
+    "Digitaler Wandel & Ethik/Ethische Künstliche Intelligenz - Von Prinzipien zu Prozessen/Divergenzen der Ethik-Prinzipien und ihrer Definition.md",
+    "Ethik & bestehende Zertifizierungsansätze.md",
+    "Künstliche Intelligenz - Manuela Lenzen.md",
+    "Gewissheit ist nicht allein in Daten zu finden.md",
+    "Aus verschiedenen Büchern entstanden und losgelöst/Konkrete Verbindung zwischen technischen Eigenheiten, spezifischen Anwendungsfeldern und gesellschaftlichen Werten.md",
+    "Digitaler Wandel & Ethik/EDAP - Schema/Ethische Deliberation für agile Prozesse - MOC.md",
+    "Digitaler Wandel & Ethik/EDAP - Schema/Vernünftige und ethisch erstrebenswerte Entscheidungen zu treffen bleibt dem Menschen vorbehalten.md",
+    "Ethische Deliberation.md",
+    "Normative Ethik.md",
+    "Normative Urteile lassen sich nicht auf epistemische Tatsachen reduzieren.md",
+    "Template/atomic idea.md",
+    "sustain Nachhaltigkeit in der KI Praxis.md",
+    "Digitaler Wandel & Ethik/Der autonome Mensch im Zeitalter des digitalen Wandels.md",
+    "Digitaler Wandel & Ethik/Demokratische Herausforderungen im Zeitalter des digitalen Wandels - Stefan Strauß, Alexander Bogner.md",
+    "Digitaler Wandel & Ethik/Achilles und die digitale Schildkröte - Peter Reichl.md",
+    "Untitled.md",
+    "artificial intelligence the global landscape anna jobin.md",
+    "Quotes",
+    "Quotes/Unkategorisierbare Quotes.md",
+    "Nachhaltigkeit.md",
+    "Daten- und Algorithmenethik.md",
+    "Permanent Notes",
+    "Untitled.canvas",
+    "Digitaler Wandel & Ethik/EDAP - Schema"
+  ]
+}

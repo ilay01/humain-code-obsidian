@@ -1,10 +1,10 @@
 Die verschiedenen Arten von Superminds und wie Gruppenentscheidungen getroffen werden
 
-[[Demokratie]]
-[[Hierarchie]]
-[[Communtiy ]]
-[[Markt]]
-[[Ökonomie]]
+[[Demokratie - Superminds]]
+[[Hierarchie - Superminds]]
+[[Communtiy - Superminds]]
+[[Markt - Superminds]]
+[[Economy - Superminds]]
 
 ### Ideas
 

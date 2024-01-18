@@ -11,6 +11,7 @@ Wie erkenne ich ein Supermind?
 
 ### Definition 
 Supermind - eine Gruppe von Individuen, die gemeinsam in einer Weise handeln, die intelligent erscheint
+
 *  eine Gruppe: 
 	* um ein Supermind zu erkennen müssen wir zuerst eine Gruppe identifizieren: 
 		-   zB eine agile Einheit im Unternehmen, die an einer Software entwickelt
