@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClearAI — Browse AI Products</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --card-hover: #16161f;
+      --border: #1e1e2e;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --green: #00b894;
+      --yellow: #fdcb6e;
+      --red: #e17055;
+      --blue: #0984e3;
+      --cyan: #00cec9;
+      --text: #e2e2e8;
+      --muted: #6b6b80;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+      border-bottom: 1px solid var(--border);
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--accent-light); }
+    .logo span { color: var(--text); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+    nav a:hover { color: var(--text); }
+
+    /* PAGE */
+    .page {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 800; }
+    .page-header p { color: var(--muted); font-size: 0.85rem; }
+
+    /* FILTERS */
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    .sort-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .result-count { font-size: 0.8rem; color: var(--muted); }
+    .sort-row select {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 0.78rem;
+      outline: none;
+    }
+
+    /* ============ CARD GRID ============ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ============ COMPACT CARD ============ */
+    .compact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .compact-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(108, 92, 231, 0.08);
+    }
+
+    /* TOP ROW: Identity + Score */
+    .cc-top {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 1.2rem 0.8rem;
+    }
+    .cc-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    .cc-identity { flex: 1; min-width: 0; }
+    .cc-identity h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cc-identity .cc-company {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .cc-overall {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .cc-overall .big-score {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .cc-overall .big-score.high { color: var(--green); }
+    .cc-overall .big-score.mid { color: var(--yellow); }
+    .cc-overall .big-score.low { color: var(--red); }
+    .cc-overall .score-sub {
+      font-size: 0.6rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* PURPOSE LINE */
+    .cc-purpose {
+      padding: 0 1.2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* MIDDLE: SPIDER + SCORES SIDE BY SIDE */
+    .cc-middle {
+      display: flex;
+      align-items: center;
+      padding: 0.6rem 1.2rem 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .cc-spider {
+      flex-shrink: 0;
+      width: 140px;
+      height: 140px;
+    }
+    .cc-spider svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mini-grid-line {
+      stroke: #1a1a28;
+      stroke-width: 0.8;
+      fill: none;
+    }
+    .mini-axis {
+      stroke: #1a1a28;
+      stroke-width: 0.4;
+    }
+    .mini-shape {
+      stroke-width: 1.5;
+      transition: all 0.3s;
+    }
+    .compact-card:hover .mini-shape {
+      fill-opacity: 0.3;
+    }
+    .mini-dot {
+      stroke-width: 1.5;
+    }
+    .mini-label {
+      font-size: 6.5px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      fill: #4a4a5a;
+    }
+
+    /* SCORE BARS */
+    .cc-scores {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .cc-score-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .cc-score-name {
+      font-size: 0.68rem;
+      color: var(--muted);
+      width: 82px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cc-score-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .cc-score-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+    .cc-score-fill.high { background: var(--green); }
+    .cc-score-fill.mid { background: var(--yellow); }
+    .cc-score-fill.low { background: var(--red); }
+    .cc-score-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      width: 20px;
+      text-align: right;
+    }
+    .cc-score-num.high { color: var(--green); }
+    .cc-score-num.mid { color: var(--yellow); }
+    .cc-score-num.low { color: var(--red); }
+
+    /* BOTTOM TAGS */
+    .cc-bottom {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .cc-tag {
+      padding: 0.18rem 0.55rem;
+      border-radius: 5px;
+      font-size: 0.65rem;
+      font-weight: 500;
+    }
+    .cc-tag.type { background: rgba(108,92,231,0.1); color: var(--accent-light); }
+    .cc-tag.sector { background: rgba(9,132,227,0.1); color: var(--blue); }
+    .cc-tag.cap-yes { background: rgba(0,184,148,0.08); color: var(--green); }
+    .cc-tag.cap-no { background: rgba(225,112,85,0.08); color: var(--red); }
+
+    .cc-spacer { flex: 1; }
+
+    .cc-verified {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+    }
+    .cc-verified.yes { background: rgba(0,184,148,0.1); color: var(--green); }
+    .cc-verified.pending { background: rgba(253,203,110,0.1); color: var(--yellow); }
+    .cc-verified.no { background: rgba(225,112,85,0.08); color: var(--red); }
+
+    .cc-arrow {
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: transform 0.2s;
+    }
+    .compact-card:hover .cc-arrow {
+      transform: translateX(3px);
+      color: var(--accent-light);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 500px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .cc-middle { flex-direction: column; }
+      .cc-spider { width: 120px; height: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Clear<span>AI</span></div>
+    <ul>
+      <li><a href="#">Browse</a></li>
+      <li><a href="#">Compare</a></li>
+      <li><a href="#">Learn</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+
+    <div class="page-header">
+      <div>
+        <h1>Browse AI Products</h1>
+        <p>Transparency scores for every AI product. Click any card for the full breakdown.</p>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">LLMs</button>
+        <button class="filter-btn">Computer Vision</button>
+        <button class="filter-btn">Recommendation</button>
+        <button class="filter-btn">Medical</button>
+        <button class="filter-btn">Code</button>
+      </div>
+    </div>
+
+    <div class="sort-row">
+      <span class="result-count">Showing <strong>6</strong> AI products</span>
+      <select>
+        <option>Sort by: Governance Score</option>
+        <option>Sort by: Name A-Z</option>
+        <option>Sort by: Newest</option>
+        <option>Sort by: Transparency</option>
+      </select>
+    </div>
+
+    <div class="card-grid" id="cardGrid"></div>
+
+  </div>
+
+  <footer>ClearAI — Because trust starts with transparency. · 2025</footer>
+
+  <script>
+    // ============ PRODUCT DATA ============
+    const products = [
+      {
+        name: 'Nova Assistant v2.1',
+        company: 'NovaTech Inc.',
+        icon: 'N',
+        gradient: ['#4361ee', '#6c5ce7'],
+        purpose: 'Conversational AI for everyday tasks — drafting, summarizing, research. Aims to reduce friction in knowledge work.',
+        type: 'LLM',
+        sector: 'General Purpose',
+        caps: ['Text', 'Images', 'Code'],
+        cantDo: ['Real-time', 'Audio'],
+        verified: 'yes',
+        overall: 7.1,
+        scores: {
+          'Transparency': 8.0,
+          'Ethics': 6.5,
+          'Fairness': 4.5,
+          'Accountability': 7.0,
+          'Safety': 7.5,
+          'Privacy': 9.0,
+          'Explainability': 6.0,
+          'Controllability': 7.5
+        }
+      },
+      {
+        name: 'MedScan AI v1.4',
+        company: 'HealthTech Labs',
+        icon: 'M',
+        gradient: ['#00b894', '#00cec9'],
+        purpose: 'Assists radiologists in detecting early-stage tumors in CT and MRI scans. Acts as a second pair of eyes for human review.',
+        type: 'Computer Vision',
+        sector: 'Medical',
+        caps: ['CT/MRI', 'Reports', 'Heatmaps'],
+        cantDo: ['X-ray', 'Pediatric'],
+        verified: 'yes',
+        overall: 8.6,
+        scores: {
+          'Transparency': 9.0,
+          'Ethics': 8.5,
+          'Fairness': 8.0,
+          'Accountability': 9.0,
+          'Safety': 9.5,
+          'Privacy': 9.5,
+          'Explainability': 7.0,
+          'Controllability': 8.5
+        }
+      },
+      {
+        name: 'PixelMind v3',
+        company: 'PixelAI Labs',
+        icon: 'P',
+        gradient: ['#e17055', '#d63031'],
+        purpose: 'Text-to-image generation model for creative professionals. Creates photorealistic and artistic images from natural language descriptions.',
+        type: 'Generative AI',
+        sector: 'Creative',
+        caps: ['Text→Image', 'Inpainting', 'Upscale'],
+        cantDo: ['Video', 'Text in images'],
+        verified: 'pending',
+        overall: 5.2,
+        scores: {
+          'Transparency': 5.0,
+          'Ethics': 4.0,
+          'Fairness': 3.5,
+          'Accountability': 5.5,
+          'Safety': 6.0,
+          'Privacy': 7.0,
+          'Explainability': 4.5,
+          'Controllability': 6.0
+        }
+      },
+      {
+        name: 'CodePilot Pro',
+        company: 'DevForge',
+        icon: 'C',
+        gradient: ['#00b894', '#55efc4'],
+        purpose: 'AI pair programmer that suggests code completions, generates functions, and explains code. Trained on open-source repositories.',
+        type: 'LLM',
+        sector: 'Developer Tools',
+        caps: ['Code', 'Docs', '42 langs'],
+        cantDo: ['Runtime', 'Deploy'],
+        verified: 'yes',
+        overall: 8.2,
+        scores: {
+          'Transparency': 9.0,
+          'Ethics': 7.5,
+          'Fairness': 7.0,
+          'Accountability': 8.0,
+          'Safety': 8.5,
+          'Privacy': 9.0,
+          'Explainability': 8.0,
+          'Controllability': 8.5
+        }
+      },
+      {
+        name: 'RecoEngine v5',
+        company: 'StreamCorp',
+        icon: 'R',
+        gradient: ['#6c5ce7', '#fd79a8'],
+        purpose: 'Content recommendation system powering personalized feeds for streaming platforms. Optimizes for engagement and satisfaction.',
+        type: 'Recommendation',
+        sector: 'Entertainment',
+        caps: ['Personalization', 'Rankings', 'A/B test'],
+        cantDo: ['Content creation'],
+        verified: 'no',
+        overall: 4.1,
+        scores: {
+          'Transparency': 3.0,
+          'Ethics': 3.5,
+          'Fairness': 4.0,
+          'Accountability': 4.5,
+          'Safety': 5.0,
+          'Privacy': 4.0,
+          'Explainability': 3.5,
+          'Controllability': 5.5
+        }
+      },
+      {
+        name: 'LegalMind v2',
+        company: 'JurisTech AI',
+        icon: 'L',
+        gradient: ['#0984e3', '#74b9ff'],
+        purpose: 'AI assistant for legal professionals — contract analysis, case law search, and risk assessment. Always requires human attorney review.',
+        type: 'LLM',
+        sector: 'Legal',
+        caps: ['Contracts', 'Case law', 'Risk'],
+        cantDo: ['Advice', 'Filing'],
+        verified: 'yes',
+        overall: 7.8,
+        scores: {
+          'Transparency': 8.5,
+          'Ethics': 8.0,
+          'Fairness': 6.5,
+          'Accountability': 8.5,
+          'Safety': 8.0,
+          'Privacy': 9.0,
+          'Explainability': 7.0,
+          'Controllability': 7.0
+        }
+      }
+    ];
+
+    // ============ RENDER CARDS ============
+    const grid = document.getElementById('cardGrid');
+
+    products.forEach((prod, idx) => {
+      const overallLevel = prod.overall >= 7 ? 'high' : prod.overall >= 5 ? 'mid' : 'low';
+      const dims = Object.entries(prod.scores);
+
+      let scoresHTML = '';
+      dims.forEach(([name, val]) => {
+        const lvl = val >= 7 ? 'high' : val >= 5 ? 'mid' : 'low';
+        scoresHTML += `
+          <div class="cc-score-row">
+            <span class="cc-score-name">${name}</span>
+            <div class="cc-score-bar"><div class="cc-score-fill ${lvl}" style="width:${val*10}%"></div></div>
+            <span class="cc-score-num ${lvl}">${val.toFixed(1)}</span>
+          </div>`;
+      });
+
+      let capsHTML = '';
+      prod.caps.forEach(c => capsHTML += `<span class="cc-tag cap-yes">${c}</span>`);
+      prod.cantDo.forEach(c => capsHTML += `<span class="cc-tag cap-no">✗ ${c}</span>`);
+
+      const verifiedClass = prod.verified;
+      const verifiedText = prod.verified === 'yes' ? '✓ Verified' : prod.verified === 'pending' ? '⏳ Pending' : '✗ Unverified';
+
+      const card = document.createElement('div');
+      card.className = 'compact-card';
+      card.innerHTML = `
+        <div class="cc-top">
+          <div class="cc-icon" style="background:linear-gradient(135deg,${prod.gradient[0]},${prod.gradient[1]})">${prod.icon}</div>
+          <div class="cc-identity">
+            <h3>${prod.name}</h3>
+            <div class="cc-company">${prod.company}</div>
+          </div>
+          <div class="cc-overall">
+            <div class="big-score ${overallLevel}">${prod.overall.toFixed(1)}</div>
+            <div class="score-sub">Score</div>
+          </div>
+        </div>
+
+        <div class="cc-purpose">${prod.purpose}</div>
+
+        <div class="cc-middle">
+          <div class="cc-spider">
+            <svg id="spider-${idx}" viewBox="0 0 160 160"></svg>
+          </div>
+          <div class="cc-scores">
+            ${scoresHTML}
+          </div>
+        </div>
+
+        <div class="cc-bottom">
+          <span class="cc-tag type">${prod.type}</span>
+          <span class="cc-tag sector">${prod.sector}</span>
+          ${capsHTML}
+          <span class="cc-spacer"></span>
+          <span class="cc-verified ${verifiedClass}">${verifiedText}</span>
+          <span class="cc-arrow">→</span>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      // Draw mini spider
+      drawMiniSpider(`spider-${idx}`, dims, prod.gradient);
+    });
+
+    // ============ MINI SPIDER RENDERER ============
+    function drawMiniSpider(svgId, dims, gradient) {
+      const svg = document.getElementById(svgId);
+      const cx = 80, cy = 80, maxR = 58;
+      const n = dims.length;
+      const levels = 4;
+
+      function polar(i, r) {
+        const a = (Math.PI * 2 * i / n) - Math.PI / 2;
+        return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+      }
+
+      // Grid
+      for (let l = 1; l <= levels; l++) {
+        const r = maxR * l / levels;
+        let pts = [];
+        for (let i = 0; i < n; i++) {
+          const p = polar(i, r);
+          pts.push(`${p.x},${p.y}`);
+        }
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        poly.setAttribute('points', pts.join(' '));
+        poly.setAttribute('class', 'mini-grid-line');
+        svg.appendChild(poly);
+      }
+
+      // Axes
+      for (let i = 0; i < n; i++) {
+        const p = polar(i, maxR);
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+        line.setAttribute('x2', p.x); line.setAttribute('y2', p.y);
+        line.setAttribute('class', 'mini-axis');
+        svg.appendChild(line);
+      }
+
+      // Shape
+      let dataPts = [];
+      dims.forEach(([, val], i) => {
+        const p = polar(i, maxR * (val / 10));
+        dataPts.push(`${p.x},${p.y}`);
+      });
+      const shape = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      shape.setAttribute('points', dataPts.join(' '));
+      shape.setAttribute('class', 'mini-shape');
+      shape.setAttribute('fill', gradient[0]);
+      shape.setAttribute('fill-opacity', '0.18');
+      shape.setAttribute('stroke', gradient[1]);
+      svg.appendChild(shape);
+
+      // Dots
+      dims.forEach(([, val], i) => {
+        const p = polar(i, maxR * (val / 10));
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', p.x);
+        dot.setAttribute('cy', p.y);
+        dot.setAttribute('r', 2.5);
+        dot.setAttribute('class', 'mini-dot');
+        dot.setAttribute('fill', gradient[1]);
+        dot.setAttribute('stroke', '#0a0a0f');
+        svg.appendChild(dot);
+      });
+
+      // Labels
+      const shortLabels = ['TRA', 'ETH', 'FAI', 'ACC', 'SAF', 'PRI', 'EXP', 'CTR'];
+      dims.forEach(([, ], i) => {
+        const p = polar(i, maxR + 14);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', p.x);
+        text.setAttribute('y', p.y);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('class', 'mini-label');
+        text.textContent = shortLabels[i];
+        svg.appendChild(text);
+      });
+    }
+  </script>
+
+</body>
+</html>

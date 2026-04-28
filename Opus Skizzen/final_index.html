@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearAI - Transparency for AI Products</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0a0f;
+        --card: #13131a;
+        --border: #1e1e2e;
+        --accent: #6c5ce7;
+        --accent-light: #a29bfe;
+        --green: #00b894;
+        --yellow: #fdcb6e;
+        --red: #e17055;
+        --blue: #0984e3;
+        --cyan: #00cec9;
+        --text: #e2e2e8;
+        --muted: #6b6b80;
+      }
+
+      body {
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      /* NAV */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 2rem;
+        border-bottom: 1px solid var(--border);
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--accent-light);
+        letter-spacing: -0.5px;
+      }
+
+      .logo span {
+        color: var(--text);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+      }
+
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+
+      nav a:hover {
+        color: var(--text);
+      }
+
+      /* HERO */
+      .hero {
+        text-align: center;
+        padding: 5rem 2rem 3rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+      }
+
+      .hero h1 .highlight {
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+
+      .search-bar {
+        display: flex;
+        gap: 0.5rem;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      .search-bar input {
+        flex: 1;
+        padding: 0.85rem 1.2rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border 0.2s;
+      }
+
+      .search-bar input:focus {
+        border-color: var(--accent);
+      }
+
+      .search-bar button {
+        padding: 0.85rem 1.5rem;
+        border-radius: 10px;
+        border: none;
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+
+      .search-bar button:hover {
+        opacity: 0.85;
+      }
+
+      /* SECTION TITLE */
+      .section-title {
+        text-align: center;
+        margin: 2rem 0 1.5rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      /* TRANSPARENCY CARD */
+      .card-container {
+        max-width: 720px;
+        margin: 0 auto 4rem;
+        padding: 0 1.5rem;
+      }
+
+      .t-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .t-card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem 1.8rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .t-card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #0984e3, #6c5ce7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .t-card-meta h2 {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+
+      .t-card-meta p {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .trust-badge {
+        margin-left: auto;
+        background: rgba(0, 184, 148, 0.1);
+        color: var(--green);
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      /* PURPOSE SECTION — NEW */
+      .purpose-section {
+        padding: 1.5rem 1.8rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .purpose-section h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        margin-bottom: 0.8rem;
+      }
+
+      .purpose-text {
+        font-size: 0.92rem;
+        line-height: 1.7;
+        color: var(--text);
+        opacity: 0.9;
+      }
+
+      /* TYPE & SECTOR — NEW */
+      .type-sector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1.3rem 1.8rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .type-block h3 {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        margin-bottom: 0.7rem;
+      }
+
+      .type-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        margin: 0.2rem;
+      }
+
+      .type-tag .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .type-tag.ai-type {
+        background: rgba(108, 92, 231, 0.12);
+        color: var(--accent-light);
+      }
+      .type-tag.ai-type .dot {
+        background: var(--accent-light);
+      }
+
+      .type-tag.primary {
+        background: rgba(9, 132, 227, 0.12);
+        color: var(--blue);
+      }
+      .type-tag.primary .dot {
+        background: var(--blue);
+      }
+
+      .type-tag.secondary {
+        background: rgba(0, 206, 201, 0.1);
+        color: var(--cyan);
+      }
+      .type-tag.secondary .dot {
+        background: var(--cyan);
+      }
+
+      .sector-note {
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-top: 0.5rem;
+        font-style: italic;
+      }
+
+      /* QUICK GLANCE */
+      .quick-glance {
+        padding: 1.5rem 1.8rem;
+      }
+
+      .quick-glance h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+
+      .glance-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .glance-item {
+        background: var(--bg);
+        border-radius: 12px;
+        padding: 1.1rem;
+      }
+
+      .glance-item .label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .tag {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        color: var(--accent-light);
+      }
+
+      .tag.red {
+        color: var(--red);
+        border-color: rgba(225, 112, 85, 0.2);
+      }
+
+      .tag.green {
+        color: var(--green);
+        border-color: rgba(0, 184, 148, 0.2);
+      }
+
+      /* LIMITATIONS */
+      .limitations {
+        padding: 0 1.8rem 1.5rem;
+      }
+
+      .limitations h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        margin-bottom: 0.8rem;
+      }
+
+      .limit-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.88rem;
+      }
+
+      .limit-icon {
+        color: var(--yellow);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* DEEP DIVE TOGGLE */
+      .deep-dive-toggle {
+        border-top: 1px solid var(--border);
+        padding: 0;
+      }
+
+      .deep-dive-toggle summary {
+        padding: 1.1rem 1.8rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--accent-light);
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.2s;
+      }
+
+      .deep-dive-toggle summary:hover {
+        background: rgba(108, 92, 231, 0.05);
+      }
+
+      .deep-dive-toggle summary::before {
+        content: "▸";
+        transition: transform 0.2s;
+      }
+
+      .deep-dive-toggle[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .deep-dive-content {
+        padding: 0 1.8rem 1.8rem;
+      }
+
+      .info-block {
+        margin-bottom: 1.5rem;
+      }
+
+      .info-block h4 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+        color: var(--text);
+      }
+
+      .info-block p {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+      }
+
+      .data-table td {
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.84rem;
+      }
+
+      .data-table td:first-child {
+        color: var(--muted);
+        width: 40%;
+      }
+
+      .filter-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: rgba(0, 184, 148, 0.1);
+        color: var(--green);
+        padding: 0.15rem 0.55rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .filter-badge.warning {
+        background: rgba(253, 203, 110, 0.1);
+        color: var(--yellow);
+      }
+
+      /* FOOTER */
+      footer {
+        text-align: center;
+        padding: 2rem;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 600px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .glance-grid {
+          grid-template-columns: 1fr;
+        }
+        .type-sector {
+          grid-template-columns: 1fr;
+        }
+        .t-card-header {
+          flex-wrap: wrap;
+        }
+        .trust-badge {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Clear<span>AI</span></div>
+      <ul>
+        <li><a href="#">Browse</a></li>
+        <li><a href="#">For Companies</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1>Know what's inside <span class="highlight">your AI</span></h1>
+      <p>
+        Transparency cards for every AI product. Understand what it does, how it
+        was built, and where it falls short — before you trust it.
+      </p>
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Search an AI product (e.g. Nova Assistant)"
+        />
+        <button>Search</button>
+      </div>
+    </section>
+
+    <div class="section-title">Example Transparency Card</div>
+
+    <div class="card-container">
+      <div class="t-card">
+        <!-- HEADER -->
+        <div class="t-card-header">
+          <div class="t-card-icon">N</div>
+          <div class="t-card-meta">
+            <h2>Nova Assistant v2.1</h2>
+            <p>by NovaTech Inc. · Updated Jan 2025</p>
+          </div>
+          <div class="trust-badge">✓ Verified</div>
+        </div>
+
+        <!-- PURPOSE — NEW -->
+        <div class="purpose-section">
+          <h3>🎯 Purpose & Mission</h3>
+          <p class="purpose-text">
+            Nova Assistant was built to provide accessible, conversational AI
+            support for everyday tasks — from drafting emails and summarizing
+            documents to answering research questions. Its primary goal is to
+            reduce friction in knowledge work while being transparent about its
+            limitations and uncertainties.
+          </p>
+        </div>
+
+        <!-- TYPE & SECTOR — NEW -->
+        <div class="type-sector">
+          <div class="type-block">
+            <h3>🧠 AI Type</h3>
+            <span class="type-tag ai-type"
+              ><span class="dot"></span>Large Language Model</span
+            >
+            <span class="type-tag ai-type"
+              ><span class="dot"></span>Natural Language Processing</span
+            >
+            <span class="type-tag ai-type"
+              ><span class="dot"></span>Computer Vision</span
+            >
+          </div>
+          <div class="type-block">
+            <h3>🏢 Target Sector</h3>
+            <span class="type-tag primary"
+              ><span class="dot"></span>General Purpose</span
+            >
+            <span class="type-tag secondary"
+              ><span class="dot"></span>Education</span
+            >
+            <span class="type-tag secondary"
+              ><span class="dot"></span>Customer Service</span
+            >
+            <p class="sector-note">
+              Primary: General Purpose · Also adopted in education & support
+            </p>
+          </div>
+        </div>
+
+        <!-- QUICK GLANCE -->
+        <div class="quick-glance">
+          <h3>⚡ Inputs & Outputs</h3>
+          <div class="glance-grid">
+            <div class="glance-item">
+              <div class="label">Inputs</div>
+              <div class="tag-list">
+                <span class="tag green">Text</span>
+                <span class="tag green">Images</span>
+                <span class="tag green">PDFs</span>
+              </div>
+            </div>
+            <div class="glance-item">
+              <div class="label">Outputs</div>
+              <div class="tag-list">
+                <span class="tag green">Text</span>
+                <span class="tag green">Summaries</span>
+                <span class="tag green">Code</span>
+              </div>
+            </div>
+            <div class="glance-item">
+              <div class="label">Cannot Do</div>
+              <div class="tag-list">
+                <span class="tag red">Real-time data</span>
+                <span class="tag red">Audio</span>
+                <span class="tag red">Video</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIMITATIONS -->
+        <div class="limitations">
+          <h3>⚠️ Known Limitations</h3>
+          <div class="limit-item">
+            <span class="limit-icon">●</span>
+            <span
+              >Knowledge cutoff: September 2024 — no awareness of recent
+              events</span
+            >
+          </div>
+          <div class="limit-item">
+            <span class="limit-icon">●</span>
+            <span
+              >May hallucinate citations and generate plausible-sounding but
+              incorrect facts</span
+            >
+          </div>
+          <div class="limit-item">
+            <span class="limit-icon">●</span>
+            <span>Not suitable for medical, legal, or financial advice</span>
+          </div>
+        </div>
+
+        <!-- DEEP DIVE -->
+        <details class="deep-dive-toggle">
+          <summary>Deep Dive — Model & Training Details</summary>
+          <div class="deep-dive-content">
+            <div class="info-block">
+              <h4>Model Architecture</h4>
+              <table class="data-table">
+                <tr>
+                  <td>Type</td>
+                  <td>Transformer (decoder-only)</td>
+                </tr>
+                <tr>
+                  <td>Parameters</td>
+                  <td>70 billion</td>
+                </tr>
+                <tr>
+                  <td>Context Window</td>
+                  <td>128k tokens</td>
+                </tr>
+                <tr>
+                  <td>Fine-tuning</td>
+                  <td>RLHF + Constitutional AI</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="info-block">
+              <h4>Training Dataset</h4>
+              <table class="data-table">
+                <tr>
+                  <td>Sources</td>
+                  <td>
+                    Web crawl, books, code repositories, licensed datasets
+                  </td>
+                </tr>
+                <tr>
+                  <td>Size</td>
+                  <td>~2.4 trillion tokens</td>
+                </tr>
+                <tr>
+                  <td>Languages</td>
+                  <td>English (primary), 12 additional languages</td>
+                </tr>
+                <tr>
+                  <td>Cutoff Date</td>
+                  <td>September 2024</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="info-block">
+              <h4>Data Filtering & Processing</h4>
+              <p>The following filters were applied before training:</p>
+              <table class="data-table">
+                <tr>
+                  <td>PII Removal</td>
+                  <td><span class="filter-badge">✓ Applied</span></td>
+                </tr>
+                <tr>
+                  <td>Toxicity Filtering</td>
+                  <td><span class="filter-badge">✓ Applied</span></td>
+                </tr>
+                <tr>
+                  <td>Deduplication</td>
+                  <td><span class="filter-badge">✓ Applied</span></td>
+                </tr>
+                <tr>
+                  <td>Copyright Filtering</td>
+                  <td><span class="filter-badge warning">⚠ Partial</span></td>
+                </tr>
+                <tr>
+                  <td>Bias Audit</td>
+                  <td>
+                    <span class="filter-badge warning">⚠ In Progress</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <footer>
+      ClearAI — Because trust starts with transparency. &nbsp;·&nbsp; 2025
+    </footer>
+  </body>
+</html>

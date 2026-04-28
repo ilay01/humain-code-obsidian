@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearAI — Dashboard Style</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #f4f6f9;
+        --white: #ffffff;
+        --text: #1a1a2e;
+        --muted: #7c7c8a;
+        --accent: #4361ee;
+        --green: #10b981;
+        --yellow: #f59e0b;
+        --red: #ef4444;
+        --border: #e5e7eb;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      nav {
+        background: var(--white);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--accent);
+      }
+      .logo span {
+        color: var(--text);
+      }
+      nav input {
+        padding: 0.6rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        width: 300px;
+        font-size: 0.85rem;
+        outline: none;
+      }
+
+      .dashboard {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+      }
+
+      .product-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .product-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #4361ee, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 1.4rem;
+      }
+      .product-header h1 {
+        font-size: 1.6rem;
+      }
+      .product-header p {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .verified {
+        margin-left: auto;
+        background: #ecfdf5;
+        color: var(--green);
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      /* METRIC CARDS */
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .metric-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 1.3rem;
+        border: 1px solid var(--border);
+      }
+      .metric-card .label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
+      }
+      .metric-card .number {
+        font-size: 1.8rem;
+        font-weight: 800;
+      }
+      .metric-card .sub {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 0.3rem;
+      }
+
+      /* SCORE BAR */
+      .score-section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        margin-bottom: 1.5rem;
+      }
+      .score-section h3 {
+        font-size: 0.95rem;
+        margin-bottom: 1.2rem;
+      }
+      .score-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.9rem;
+        gap: 1rem;
+      }
+      .score-label {
+        width: 140px;
+        font-size: 0.84rem;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .score-bar-bg {
+        flex: 1;
+        height: 10px;
+        background: var(--bg);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      .score-bar-fill {
+        height: 100%;
+        border-radius: 5px;
+        transition: width 0.5s;
+      }
+      .score-bar-fill.high {
+        background: var(--green);
+      }
+      .score-bar-fill.mid {
+        background: var(--yellow);
+      }
+      .score-bar-fill.low {
+        background: var(--red);
+      }
+      .score-value {
+        font-size: 0.85rem;
+        font-weight: 700;
+        width: 36px;
+        text-align: right;
+      }
+
+      /* TWO COL */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .panel {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+      }
+      .panel h3 {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+      .io-tag {
+        display: inline-block;
+        padding: 0.35rem 0.8rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin: 0.2rem;
+      }
+      .io-tag.yes {
+        background: #ecfdf5;
+        color: var(--green);
+      }
+      .io-tag.no {
+        background: #fef2f2;
+        color: var(--red);
+      }
+
+      .limit-item {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.6rem;
+        font-size: 0.85rem;
+        color: #555;
+      }
+      .limit-dot {
+        color: var(--yellow);
+        flex-shrink: 0;
+      }
+
+      .detail-table {
+        width: 100%;
+      }
+      .detail-table td {
+        padding: 0.55rem 0;
+        font-size: 0.84rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .detail-table td:first-child {
+        color: var(--muted);
+        width: 45%;
+      }
+
+      .filter-tag {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+      .filter-tag.done {
+        background: #ecfdf5;
+        color: var(--green);
+      }
+      .filter-tag.partial {
+        background: #fffbeb;
+        color: var(--yellow);
+      }
+
+      @media (max-width: 768px) {
+        .metrics {
+          grid-template-columns: 1fr 1fr;
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Clear<span>AI</span></div>
+      <input type="text" placeholder="Search AI products..." />
+    </nav>
+
+    <div class="dashboard">
+      <div class="product-header">
+        <div class="product-icon">N</div>
+        <div>
+          <h1>Nova Assistant v2.1</h1>
+          <p>by NovaTech Inc. · General-purpose LLM · Updated Jan 2025</p>
+        </div>
+        <div class="verified">✓ Verified</div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="label">Parameters</div>
+          <div class="number">70B</div>
+          <div class="sub">Decoder-only transformer</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Training Data</div>
+          <div class="number">2.4T</div>
+          <div class="sub">tokens from web + licensed</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Context Window</div>
+          <div class="number">128K</div>
+          <div class="sub">tokens max input</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Languages</div>
+          <div class="number">13</div>
+          <div class="sub">English primary</div>
+        </div>
+      </div>
+
+      <div class="score-section">
+        <h3>📊 Transparency Scores</h3>
+        <div class="score-row">
+          <span class="score-label">Data Transparency</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill high" style="width: 80%"></div>
+          </div>
+          <span class="score-value">8.0</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Bias Auditing</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill mid" style="width: 45%"></div>
+          </div>
+          <span class="score-value">4.5</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Privacy</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill high" style="width: 90%"></div>
+          </div>
+          <span class="score-value">9.0</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Safety Measures</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill high" style="width: 75%"></div>
+          </div>
+          <span class="score-value">7.5</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Open Documentation</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill mid" style="width: 60%"></div>
+          </div>
+          <span class="score-value">6.0</span>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>✅ Capabilities</h3>
+          <div>
+            <span class="io-tag yes">Text Input</span>
+            <span class="io-tag yes">Image Input</span>
+            <span class="io-tag yes">PDF Input</span>
+            <span class="io-tag yes">Text Output</span>
+            <span class="io-tag yes">Code Generation</span>
+            <span class="io-tag yes">Summarization</span>
+            <span class="io-tag no">Real-time Data</span>
+            <span class="io-tag no">Audio</span>
+            <span class="io-tag no">Video</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>⚠️ Known Limitations</h3>
+          <div class="limit-item">
+            <span class="limit-dot">●</span> Knowledge cutoff: Sept 2024
+          </div>
+          <div class="limit-item">
+            <span class="limit-dot">●</span> May hallucinate citations
+          </div>
+          <div class="limit-item">
+            <span class="limit-dot">●</span> Not for medical/legal/financial
+            advice
+          </div>
+          <div class="limit-item">
+            <span class="limit-dot">●</span> Struggles with math above graduate
+            level
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>🏗️ Architecture Details</h3>
+          <table class="detail-table">
+            <tr>
+              <td>Type</td>
+              <td>Transformer (decoder-only)</td>
+            </tr>
+            <tr>
+              <td>Fine-tuning</td>
+              <td>RLHF + Constitutional AI</td>
+            </tr>
+            <tr>
+              <td>Quantization</td>
+              <td>Available in 4-bit, 8-bit</td>
+            </tr>
+            <tr>
+              <td>Open Weights</td>
+              <td>No</td>
+            </tr>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>🧹 Data Filtering</h3>
+          <table class="detail-table">
+            <tr>
+              <td>PII Removal</td>
+              <td><span class="filter-tag done">✓ Applied</span></td>
+            </tr>
+            <tr>
+              <td>Toxicity Filter</td>
+              <td><span class="filter-tag done">✓ Applied</span></td>
+            </tr>
+            <tr>
+              <td>Deduplication</td>
+              <td><span class="filter-tag done">✓ Applied</span></td>
+            </tr>
+            <tr>
+              <td>Copyright Filter</td>
+              <td><span class="filter-tag partial">⚠ Partial</span></td>
+            </tr>
+            <tr>
+              <td>Bias Audit</td>
+              <td><span class="filter-tag partial">⚠ In Progress</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

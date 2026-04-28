@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearAI — Directory Style</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #0f1117;
+        --card: #181a20;
+        --border: #2a2d37;
+        --accent: #818cf8;
+        --green: #34d399;
+        --yellow: #fbbf24;
+        --red: #f87171;
+        --text: #e5e5ea;
+        --muted: #6b6e7b;
+      }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      nav {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.5rem 1.5rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--accent);
+      }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+      }
+
+      .page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+      }
+
+      .page-header {
+        margin-bottom: 1rem;
+      }
+      .page-header h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+      }
+      .page-header p {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .filters {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        padding: 0.45rem 1rem;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+      .filter-btn.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      /* PRODUCT LIST */
+      .product-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .product-row {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.3rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+        transition:
+          border 0.2s,
+          transform 0.1s;
+      }
+      .product-row:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      .p-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .p-info {
+        flex: 1;
+      }
+      .p-info h3 {
+        font-size: 1rem;
+        margin-bottom: 0.15rem;
+      }
+      .p-info .desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      .p-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-shrink: 0;
+      }
+      .p-tag {
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .p-tag.text {
+        background: rgba(129, 140, 248, 0.15);
+        color: var(--accent);
+      }
+      .p-tag.image {
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--green);
+      }
+      .p-tag.code {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--yellow);
+      }
+
+      .p-scores {
+        display: flex;
+        gap: 1rem;
+        flex-shrink: 0;
+        align-items: center;
+      }
+
+      .mini-score {
+        text-align: center;
+      }
+      .mini-score .num {
+        font-size: 1.1rem;
+        font-weight: 800;
+      }
+      .mini-score .num.high {
+        color: var(--green);
+      }
+      .mini-score .num.mid {
+        color: var(--yellow);
+      }
+      .mini-score .num.low {
+        color: var(--red);
+      }
+      .mini-score .lbl {
+        font-size: 0.6rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .arrow {
+        color: var(--muted);
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      /* Expanded Detail */
+      .expanded-detail {
+        background: var(--card);
+        border: 2px solid var(--accent);
+        border-radius: 14px;
+        padding: 1.5rem;
+        margin-top: -0.5rem;
+        display: none;
+      }
+      .expanded-detail.show {
+        display: block;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .d-block h4 {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
+      }
+      .d-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.82rem;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .d-item .k {
+        color: var(--muted);
+      }
+      .d-tag {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.45rem;
+        border-radius: 3px;
+        font-weight: 600;
+      }
+      .d-tag.ok {
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--green);
+      }
+      .d-tag.warn {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--yellow);
+      }
+
+      .limit-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .limit-chip {
+        padding: 0.3rem 0.7rem;
+        background: rgba(248, 113, 113, 0.1);
+        color: var(--red);
+        border-radius: 6px;
+        font-size: 0.75rem;
+      }
+
+      @media (max-width: 700px) {
+        .p-scores,
+        .p-tags {
+          display: none;
+        }
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">ClearAI</div>
+      <a href="#">Submit a product →</a>
+    </nav>
+
+    <div class="page">
+      <div class="page-header">
+        <h1>AI Transparency Directory</h1>
+        <p>Honest breakdowns of AI products. Click any to explore.</p>
+      </div>
+
+      <div class="filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Chatbots</button>
+        <button class="filter-btn">Image Gen</button>
+        <button class="filter-btn">Code Assist</button>
+        <button class="filter-btn">Search</button>
+        <button class="filter-btn">Agents</button>
+      </div>
+
+      <div class="product-list">
+        <!-- PRODUCT 1 -->
+        <div class="product-row" onclick="toggle('d1')">
+          <div
+            class="p-icon"
+            style="background: linear-gradient(135deg, #4361ee, #7c3aed)"
+          >
+            N
+          </div>
+          <div class="p-info">
+            <h3>Nova Assistant v2.1</h3>
+            <div class="desc">General-purpose LLM by NovaTech Inc.</div>
+          </div>
+          <div class="p-tags">
+            <span class="p-tag text">Text</span>
+            <span class="p-tag image">Vision</span>
+            <span class="p-tag code">Code</span>
+          </div>
+          <div class="p-scores">
+            <div class="mini-score">
+              <div class="num high">8.0</div>
+              <div class="lbl">Trust</div>
+            </div>
+            <div class="mini-score">
+              <div class="num mid">6.5</div>
+              <div class="lbl">Open</div>
+            </div>
+          </div>
+          <div class="arrow">›</div>
+        </div>
+
+        <div class="expanded-detail" id="d1">
+          <div class="detail-grid">
+            <div class="d-block">
+              <h4>Architecture</h4>
+              <div class="d-item">
+                <span class="k">Type</span><span>Transformer 70B</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Context</span><span>128K tokens</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Training</span><span>RLHF</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Data</span><span>2.4T tokens</span>
+              </div>
+            </div>
+            <div class="d-block">
+              <h4>Data Filtering</h4>
+              <div class="d-item">
+                <span class="k">PII</span><span class="d-tag ok">✓</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Toxicity</span><span class="d-tag ok">✓</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Copyright</span
+                ><span class="d-tag warn">⚠</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Bias</span><span class="d-tag warn">⚠</span>
+              </div>
+            </div>
+            <div class="d-block">
+              <h4>Limitations</h4>
+              <div class="limit-list">
+                <span class="limit-chip">No real-time data</span>
+                <span class="limit-chip">May hallucinate</span>
+                <span class="limit-chip">No audio/video</span>
+                <span class="limit-chip">Cutoff Sept 2024</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 2 -->
+        <div class="product-row" onclick="toggle('d2')">
+          <div
+            class="p-icon"
+            style="background: linear-gradient(135deg, #e17055, #d63031)"
+          >
+            P
+          </div>
+          <div class="p-info">
+            <h3>PixelMind v3</h3>
+            <div class="desc">Image generation model by PixelAI Labs</div>
+          </div>
+          <div class="p-tags">
+            <span class="p-tag text">Text→Image</span>
+            <span class="p-tag image">Inpainting</span>
+          </div>
+          <div class="p-scores">
+            <div class="mini-score">
+              <div class="num mid">5.5</div>
+              <div class="lbl">Trust</div>
+            </div>
+            <div class="mini-score">
+              <div class="num low">3.0</div>
+              <div class="lbl">Open</div>
+            </div>
+          </div>
+          <div class="arrow">›</div>
+        </div>
+
+        <div class="expanded-detail" id="d2">
+          <div class="detail-grid">
+            <div class="d-block">
+              <h4>Architecture</h4>
+              <div class="d-item">
+                <span class="k">Type</span><span>Diffusion Model</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Resolution</span><span>Up to 2048px</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Data</span><span>~800M images</span>
+              </div>
+            </div>
+            <div class="d-block">
+              <h4>Data Filtering</h4>
+              <div class="d-item">
+                <span class="k">NSFW</span><span class="d-tag ok">✓</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Copyright</span
+                ><span class="d-tag warn">⚠</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Consent</span><span class="d-tag warn">⚠</span>
+              </div>
+            </div>
+            <div class="d-block">
+              <h4>Limitations</h4>
+              <div class="limit-list">
+                <span class="limit-chip">Struggles with text in images</span>
+                <span class="limit-chip">Bias in skin tones</span>
+                <span class="limit-chip">No video output</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 3 -->
+        <div class="product-row" onclick="toggle('d3')">
+          <div
+            class="p-icon"
+            style="background: linear-gradient(135deg, #00b894, #00cec9)"
+          >
+            C
+          </div>
+          <div class="p-info">
+            <h3>CodePilot Pro</h3>
+            <div class="desc">AI pair programmer by DevForge</div>
+          </div>
+          <div class="p-tags">
+            <span class="p-tag code">Code</span>
+            <span class="p-tag text">Text</span>
+          </div>
+          <div class="p-scores">
+            <div class="mini-score">
+              <div class="num high">9.0</div>
+              <div class="lbl">Trust</div>
+            </div>
+            <div class="mini-score">
+              <div class="num high">8.5</div>
+              <div class="lbl">Open</div>
+            </div>
+          </div>
+          <div class="arrow">›</div>
+        </div>
+
+        <div class="expanded-detail" id="d3">
+          <div class="detail-grid">
+            <div class="d-block">
+              <h4>Architecture</h4>
+              <div class="d-item">
+                <span class="k">Type</span><span>Transformer 34B</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Context</span><span>64K tokens</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Languages</span
+                ><span>42 programming langs</span>
+              </div>
+            </div>
+            <div class="d-block">
+              <h4>Data Filtering</h4>
+              <div class="d-item">
+                <span class="k">License filter</span
+                ><span class="d-tag ok">✓</span>
+              </div>
+              <div class="d-item">
+                <span class="k">PII</span><span class="d-tag ok">✓</span>
+              </div>
+              <div class="d-item">
+                <span class="k">Malware</span><span class="d-tag ok">✓</span>
+              </div>
+            </div>
+            <div class="d-block">
+              <h4>Limitations</h4>
+              <div class="limit-list">
+                <span class="limit-chip"
+                  >Not for production without review</span
+                >
+                <span class="limit-chip">May suggest deprecated APIs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggle(id) {
+        const el = document.getElementById(id);
+        document.querySelectorAll(".expanded-detail").forEach((d) => {
+          if (d.id !== id) d.classList.remove("show");
+        });
+        el.classList.toggle("show");
+      }
+    </script>
+  </body>
+</html>

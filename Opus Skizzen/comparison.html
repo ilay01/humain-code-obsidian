@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearAI — Compare AI Products</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #0a0a0f;
+        --card: #13131a;
+        --card-hover: #181822;
+        --border: #1e1e2e;
+        --accent: #6c5ce7;
+        --accent-light: #a29bfe;
+        --green: #00b894;
+        --yellow: #fdcb6e;
+        --red: #e17055;
+        --blue: #0984e3;
+        --cyan: #00cec9;
+        --pink: #fd79a8;
+        --text: #e2e2e8;
+        --muted: #6b6b80;
+        --ai-a: #6c5ce7;
+        --ai-b: #00cec9;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      /* TOPBAR */
+      .topbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(10, 10, 15, 0.92);
+        backdrop-filter: blur(14px);
+        padding: 0.85rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        z-index: 100;
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--accent-light);
+      }
+      .logo span {
+        color: var(--text);
+      }
+      .topbar-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .topbar a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+      }
+      .topbar a:hover {
+        color: var(--text);
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      /* SELECTOR */
+      .selector-section {
+        margin-bottom: 2.5rem;
+      }
+      .selector-section h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-bottom: 0.4rem;
+        text-align: center;
+      }
+      .selector-section h1 .em {
+        background: linear-gradient(135deg, var(--accent), var(--cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .selector-section > p {
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+      }
+
+      .selector-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .selector-card {
+        flex: 1;
+        max-width: 380px;
+        min-width: 260px;
+      }
+      .selector-card select {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border-radius: 12px;
+        border: 2px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        font-size: 0.95rem;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b80' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+      }
+      .selector-card select:focus {
+        border-color: var(--accent);
+      }
+      .selector-card.a select {
+        border-color: var(--ai-a);
+      }
+      .selector-card.b select {
+        border-color: var(--ai-b);
+      }
+      .selector-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+      .selector-label.a {
+        color: var(--ai-a);
+      }
+      .selector-label.b {
+        color: var(--ai-b);
+      }
+
+      .vs-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--card);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+
+      /* COMPARISON HEADER */
+      .compare-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .product-card-mini {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.3rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .product-card-mini::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+      }
+      .product-card-mini.a::before {
+        background: var(--ai-a);
+      }
+      .product-card-mini.b::before {
+        background: var(--ai-b);
+      }
+
+      .mini-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: white;
+        flex-shrink: 0;
+      }
+      .mini-info h3 {
+        font-size: 1rem;
+        font-weight: 700;
+      }
+      .mini-info p {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .mini-badge {
+        margin-left: auto;
+        padding: 0.25rem 0.65rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .mini-badge.verified {
+        background: rgba(0, 184, 148, 0.1);
+        color: var(--green);
+      }
+      .mini-badge.unverified {
+        background: rgba(253, 203, 110, 0.1);
+        color: var(--yellow);
+      }
+
+      /* SECTION TITLES */
+      .compare-section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin: 2.5rem 0 1rem;
+      }
+      .compare-section-title .icon {
+        font-size: 1.1rem;
+      }
+      .compare-section-title h2 {
+        font-size: 1.05rem;
+        font-weight: 700;
+      }
+      .compare-section-title .line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* COMPARISON GRID — THE CORE LAYOUT */
+      .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+      }
+      .compare-cell {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem 1.2rem;
+        position: relative;
+        transition: border 0.2s;
+      }
+      .compare-cell.a {
+        border-top: 2px solid rgba(108, 92, 231, 0.3);
+      }
+      .compare-cell.b {
+        border-top: 2px solid rgba(0, 206, 201, 0.3);
+      }
+
+      /* WINNER/BETTER HIGHLIGHT */
+      .compare-cell.better {
+        border-color: rgba(0, 184, 148, 0.3);
+        background: rgba(0, 184, 148, 0.03);
+      }
+      .compare-cell.worse {
+        border-color: rgba(225, 112, 85, 0.2);
+      }
+      .compare-cell.same {
+        border-color: var(--border);
+      }
+
+      .winner-badge {
+        position: absolute;
+        top: 0.6rem;
+        right: 0.8rem;
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+      .winner-badge.win {
+        background: rgba(0, 184, 148, 0.12);
+        color: var(--green);
+      }
+      .winner-badge.tie {
+        background: rgba(108, 92, 231, 0.1);
+        color: var(--accent-light);
+      }
+
+      .cell-label {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
+      }
+
+      /* FULL-WIDTH COMPARISON ROW */
+      .compare-full {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 0.8rem;
+        overflow: hidden;
+      }
+      .compare-full-header {
+        display: grid;
+        grid-template-columns: 180px 1fr 1fr;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.85rem 1.3rem;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .compare-full-header .col-a {
+        color: var(--ai-a);
+        font-weight: 600;
+        text-align: center;
+      }
+      .compare-full-header .col-b {
+        color: var(--ai-b);
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .compare-table-row {
+        display: grid;
+        grid-template-columns: 180px 1fr 1fr;
+        gap: 1rem;
+        padding: 0.75rem 1.3rem;
+        border-bottom: 1px solid var(--border);
+        align-items: center;
+        font-size: 0.85rem;
+        transition: background 0.15s;
+      }
+      .compare-table-row:last-child {
+        border-bottom: none;
+      }
+      .compare-table-row:hover {
+        background: rgba(255, 255, 255, 0.01);
+      }
+
+      .row-label {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .row-val {
+        text-align: center;
+      }
+
+      /* TAGS */
+      .tag {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.73rem;
+        font-weight: 500;
+        margin: 0.15rem;
+      }
+      .tag.green {
+        background: rgba(0, 184, 148, 0.1);
+        color: var(--green);
+      }
+      .tag.red {
+        background: rgba(225, 112, 85, 0.1);
+        color: var(--red);
+      }
+      .tag.blue {
+        background: rgba(9, 132, 227, 0.1);
+        color: var(--blue);
+      }
+      .tag.purple {
+        background: rgba(108, 92, 231, 0.1);
+        color: var(--accent-light);
+      }
+      .tag.cyan {
+        background: rgba(0, 206, 201, 0.1);
+        color: var(--cyan);
+      }
+      .tag.yellow {
+        background: rgba(253, 203, 110, 0.1);
+        color: var(--yellow);
+      }
+      .tag.neutral {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--muted);
+      }
+
+      /* STATUS DOTS */
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+      .status .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .status.yes .dot {
+        background: var(--green);
+      }
+      .status.yes {
+        color: var(--green);
+      }
+      .status.partial .dot {
+        background: var(--yellow);
+      }
+      .status.partial {
+        color: var(--yellow);
+      }
+      .status.no .dot {
+        background: var(--red);
+      }
+      .status.no {
+        color: var(--red);
+      }
+      .status.unknown .dot {
+        background: var(--muted);
+      }
+      .status.unknown {
+        color: var(--muted);
+      }
+
+      /* SCORE BARS */
+      .score-compare {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        justify-content: center;
+      }
+      .score-bar-mini {
+        width: 80px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .score-bar-mini .fill {
+        height: 100%;
+        border-radius: 4px;
+      }
+      .score-bar-mini .fill.high {
+        background: var(--green);
+      }
+      .score-bar-mini .fill.mid {
+        background: var(--yellow);
+      }
+      .score-bar-mini .fill.low {
+        background: var(--red);
+      }
+      .score-num {
+        font-size: 0.85rem;
+        font-weight: 700;
+        width: 28px;
+      }
+
+      /* PURPOSE COMPARISON */
+      .purpose-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+      }
+      .purpose-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.2rem;
+      }
+      .purpose-box p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        color: #b0b0be;
+      }
+
+      /* VERDICT SECTION */
+      .verdict-section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.8rem;
+        margin-top: 2rem;
+        text-align: center;
+      }
+      .verdict-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      .verdict-section > p {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+      }
+      .verdict-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .verdict-item {
+        background: var(--bg);
+        border-radius: 10px;
+        padding: 1rem;
+      }
+      .verdict-item .v-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      .verdict-item .v-winner {
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      .verdict-item .v-winner.a-wins {
+        color: var(--ai-a);
+      }
+      .verdict-item .v-winner.b-wins {
+        color: var(--ai-b);
+      }
+      .verdict-item .v-winner.draw {
+        color: var(--yellow);
+      }
+
+      .verdict-note {
+        font-size: 0.8rem;
+        color: var(--muted);
+        background: rgba(253, 203, 110, 0.06);
+        border: 1px solid rgba(253, 203, 110, 0.15);
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        line-height: 1.6;
+      }
+
+      /* GOVERNANCE CHECKLIST COMPARISON */
+      .gov-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+      }
+      .gov-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.2rem;
+      }
+      .gov-card h4 {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+      }
+      .gov-check {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.82rem;
+      }
+      .gov-check .check {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.65rem;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .gov-check .check.yes {
+        background: rgba(0, 184, 148, 0.15);
+        color: var(--green);
+      }
+      .gov-check .check.no {
+        background: rgba(225, 112, 85, 0.12);
+        color: var(--red);
+      }
+      .gov-check .check.partial {
+        background: rgba(253, 203, 110, 0.12);
+        color: var(--yellow);
+      }
+
+      /* LIMITATIONS COMPARISON */
+      .limit-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .limit-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.2rem;
+      }
+      .limit-item {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.83rem;
+        color: #b0b0be;
+      }
+      .limit-item .li-icon {
+        color: var(--yellow);
+        flex-shrink: 0;
+      }
+
+      /* DIFFERENCES HIGHLIGHT */
+      .diff-highlight {
+        background: rgba(253, 203, 110, 0.06);
+        border: 1px dashed rgba(253, 203, 110, 0.25);
+        border-radius: 10px;
+        padding: 1rem 1.3rem;
+        margin-bottom: 0.8rem;
+      }
+      .diff-highlight .diff-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--yellow);
+        margin-bottom: 0.6rem;
+      }
+      .diff-highlight p {
+        font-size: 0.85rem;
+        color: #c0b090;
+        line-height: 1.6;
+      }
+
+      /* CTA */
+      .compare-cta {
+        text-align: center;
+        margin-top: 2.5rem;
+        padding: 2rem;
+      }
+      .cta-btn {
+        display: inline-block;
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        margin: 0.3rem;
+      }
+      .cta-btn:hover {
+        opacity: 0.85;
+      }
+      .cta-btn.primary {
+        background: var(--accent);
+        color: white;
+        border: none;
+      }
+      .cta-btn.secondary {
+        background: transparent;
+        color: var(--accent-light);
+        border: 1px solid var(--border);
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+
+      @media (max-width: 768px) {
+        .compare-header,
+        .compare-row,
+        .purpose-compare,
+        .gov-grid,
+        .limit-compare {
+          grid-template-columns: 1fr;
+        }
+        .compare-full-header,
+        .compare-table-row {
+          grid-template-columns: 120px 1fr 1fr;
+          font-size: 0.75rem;
+        }
+        .verdict-grid {
+          grid-template-columns: 1fr;
+        }
+        .selector-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .selector-card {
+          max-width: 100%;
+        }
+        .vs-badge {
+          align-self: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="logo">Clear<span>AI</span></div>
+      <div class="topbar-links">
+        <a href="#">← Browse Products</a>
+        <a href="#">AI Guide</a>
+        <a href="#">Governance KB</a>
+      </div>
+    </div>
+
+    <div class="page">
+      <!-- SELECTOR -->
+      <div class="selector-section">
+        <h1>Compare <span class="em">AI Products</span></h1>
+        <p>
+          See how two AI products stack up on transparency, capabilities, and
+          governance.
+        </p>
+
+        <div class="selector-row">
+          <div class="selector-card a">
+            <div class="selector-label a">Product A</div>
+            <select>
+              <option selected>Nova Assistant v2.1</option>
+              <option>PixelMind v3</option>
+              <option>CodePilot Pro</option>
+              <option>MedScan AI</option>
+            </select>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="selector-card b">
+            <div class="selector-label b">Product B</div>
+            <select>
+              <option>Nova Assistant v2.1</option>
+              <option selected>MedScan AI v1.4</option>
+              <option>CodePilot Pro</option>
+              <option>PixelMind v3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT HEADERS -->
+      <div class="compare-header">
+        <div class="product-card-mini a">
+          <div
+            class="mini-icon"
+            style="background: linear-gradient(135deg, #4361ee, #6c5ce7)"
+          >
+            N
+          </div>
+          <div class="mini-info">
+            <h3>Nova Assistant v2.1</h3>
+            <p>NovaTech Inc. · General Purpose LLM</p>
+          </div>
+          <div class="mini-badge verified">✓ Verified</div>
+        </div>
+        <div class="product-card-mini b">
+          <div
+            class="mini-icon"
+            style="background: linear-gradient(135deg, #00b894, #00cec9)"
+          >
+            M
+          </div>
+          <div class="mini-info">
+            <h3>MedScan AI v1.4</h3>
+            <p>HealthTech Labs · Medical Imaging</p>
+          </div>
+          <div class="mini-badge unverified">⏳ Pending</div>
+        </div>
+      </div>
+
+      <!-- ==================== PURPOSE ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">🎯</span>
+        <h2>Purpose & Mission</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="purpose-compare">
+        <div
+          class="purpose-box"
+          style="border-top: 2px solid rgba(108, 92, 231, 0.3)"
+        >
+          <div class="cell-label">Nova Assistant</div>
+          <p>
+            Built to provide accessible, conversational AI support for everyday
+            tasks — from drafting emails and summarizing documents to answering
+            research questions. Aims to reduce friction in knowledge work.
+          </p>
+        </div>
+        <div
+          class="purpose-box"
+          style="border-top: 2px solid rgba(0, 206, 201, 0.3)"
+        >
+          <div class="cell-label">MedScan AI</div>
+          <p>
+            Designed to assist radiologists in detecting early-stage tumors in
+            CT and MRI scans. Acts as a second pair of eyes — flags areas of
+            concern for human review. Never makes final diagnoses alone.
+          </p>
+        </div>
+      </div>
+
+      <div class="diff-highlight">
+        <div class="diff-label">💡 Key Difference</div>
+        <p>
+          <strong>Nova</strong> is a general-purpose tool anyone can use.
+          <strong>MedScan</strong> is a specialized medical tool used only by
+          trained radiologists. This fundamentally changes how each should be
+          evaluated — a medical AI needs stricter safety standards, while a
+          general-purpose AI needs broader fairness testing.
+        </p>
+      </div>
+
+      <!-- ==================== TYPE & SECTOR ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">🧠</span>
+        <h2>AI Type & Target Sector</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="compare-full">
+        <div class="compare-full-header">
+          <span></span>
+          <span class="col-a">Nova Assistant</span>
+          <span class="col-b">MedScan AI</span>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">AI Type</span>
+          <div class="row-val">
+            <span class="tag purple">LLM</span>
+            <span class="tag purple">NLP</span>
+            <span class="tag purple">Computer Vision</span>
+          </div>
+          <div class="row-val">
+            <span class="tag cyan">Computer Vision</span>
+            <span class="tag cyan">Deep Learning</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Primary Sector</span>
+          <div class="row-val">
+            <span class="tag blue">General Purpose</span>
+          </div>
+          <div class="row-val">
+            <span class="tag blue">Medical / Healthcare</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Secondary Use</span>
+          <div class="row-val">
+            <span class="tag neutral">Education</span>
+            <span class="tag neutral">Customer Service</span>
+          </div>
+          <div class="row-val">
+            <span class="tag neutral">Research</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">End Users</span>
+          <div class="row-val">Anyone</div>
+          <div class="row-val">Licensed radiologists only</div>
+        </div>
+      </div>
+
+      <!-- ==================== TRANSPARENCY SCORES ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">📊</span>
+        <h2>Transparency Scores</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="compare-full">
+        <div class="compare-full-header">
+          <span>Dimension</span>
+          <span class="col-a">Nova</span>
+          <span class="col-b">MedScan</span>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Data Transparency</span>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 80%"></div>
+              </div>
+              <span class="score-num">8.0</span>
+            </div>
+          </div>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 90%"></div>
+              </div>
+              <span class="score-num">9.0</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Bias Auditing</span>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill mid" style="width: 45%"></div>
+              </div>
+              <span class="score-num">4.5</span>
+            </div>
+          </div>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 85%"></div>
+              </div>
+              <span class="score-num">8.5</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Privacy</span>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 90%"></div>
+              </div>
+              <span class="score-num">9.0</span>
+            </div>
+          </div>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 95%"></div>
+              </div>
+              <span class="score-num">9.5</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Safety Measures</span>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 75%"></div>
+              </div>
+              <span class="score-num">7.5</span>
+            </div>
+          </div>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 95%"></div>
+              </div>
+              <span class="score-num">9.5</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Explainability</span>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill mid" style="width: 60%"></div>
+              </div>
+              <span class="score-num">6.0</span>
+            </div>
+          </div>
+          <div class="row-val">
+            <div class="score-compare">
+              <div class="score-bar-mini">
+                <div class="fill high" style="width: 70%"></div>
+              </div>
+              <span class="score-num">7.0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diff-highlight">
+        <div class="diff-label">💡 Why MedScan scores higher</div>
+        <p>
+          Medical AI products face
+          <strong>regulatory requirements</strong> (FDA, EU MDR) that force
+          higher standards in bias auditing, safety, and privacy. This doesn't
+          mean Nova is "bad" — it means the bar is different for different
+          sectors. A general-purpose chatbot and a tumor-detection system
+          shouldn't be held to identical standards.
+        </p>
+      </div>
+
+      <!-- ==================== CAPABILITIES ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">⚡</span>
+        <h2>Inputs & Outputs</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="compare-full">
+        <div class="compare-full-header">
+          <span>Capability</span>
+          <span class="col-a">Nova</span>
+          <span class="col-b">MedScan</span>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Text Input</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="row-val">
+            <span class="status partial"><span class="dot"></span>Limited</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Image Input</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"
+              ><span class="dot"></span>Yes (CT/MRI)</span
+            >
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">PDF/Documents</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>DICOM files</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Text Output</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Reports</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Visual Output</span>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Heatmaps</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Code Generation</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Real-time Data</span>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Audio</span>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ARCHITECTURE ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">🏗️</span>
+        <h2>Model Architecture</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="compare-full">
+        <div class="compare-full-header">
+          <span>Spec</span>
+          <span class="col-a">Nova</span>
+          <span class="col-b">MedScan</span>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Architecture</span>
+          <div class="row-val">Transformer (decoder)</div>
+          <div class="row-val">CNN + Vision Transformer</div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Parameters</span>
+          <div class="row-val"><strong>70B</strong></div>
+          <div class="row-val"><strong>890M</strong></div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Context / Input</span>
+          <div class="row-val">128K tokens</div>
+          <div class="row-val">512×512px slices</div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Training Data</span>
+          <div class="row-val">~2.4T tokens (web)</div>
+          <div class="row-val">~2.1M medical images</div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Fine-tuning</span>
+          <div class="row-val">RLHF + Constitutional AI</div>
+          <div class="row-val">Supervised (radiologist labels)</div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Open Weights</span>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+          <div class="row-val">
+            <span class="status no"><span class="dot"></span>No</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== DATA FILTERING ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">🧹</span>
+        <h2>Data Filtering & Processing</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="compare-full">
+        <div class="compare-full-header">
+          <span>Filter</span>
+          <span class="col-a">Nova</span>
+          <span class="col-b">MedScan</span>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">PII Removal</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Applied</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Applied</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Toxicity Filter</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Applied</span>
+          </div>
+          <div class="row-val">
+            <span class="status unknown"><span class="dot"></span>N/A</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Deduplication</span>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Applied</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Applied</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Copyright Filter</span>
+          <div class="row-val">
+            <span class="status partial"><span class="dot"></span>Partial</span>
+          </div>
+          <div class="row-val">
+            <span class="status yes"
+              ><span class="dot"></span>Licensed data only</span
+            >
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Bias Audit</span>
+          <div class="row-val">
+            <span class="status partial"
+              ><span class="dot"></span>In progress</span
+            >
+          </div>
+          <div class="row-val">
+            <span class="status yes"><span class="dot"></span>Published</span>
+          </div>
+        </div>
+        <div class="compare-table-row">
+          <span class="row-label">Demographic Balance</span>
+          <div class="row-val">
+            <span class="status unknown"
+              ><span class="dot"></span>Not disclosed</span
+            >
+          </div>
+          <div class="row-val">
+            <span class="status yes"
+              ><span class="dot"></span>Multi-ethnic dataset</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== GOVERNANCE ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">⚖️</span>
+        <h2>Governance & Compliance</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="gov-grid">
+        <div
+          class="gov-card"
+          style="border-top: 2px solid rgba(108, 92, 231, 0.3)"
+        >
+          <div class="cell-label">Nova Assistant</div>
+          <h4>Governance Checklist</h4>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Dedicated responsible person
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Internal documentation
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Competence training program
+          </div>
+          <div class="gov-check">
+            <div class="check partial">~</div>
+            Complaint mechanism
+          </div>
+          <div class="gov-check">
+            <div class="check no">✗</div>
+            External audit completed
+          </div>
+          <div class="gov-check">
+            <div class="check partial">~</div>
+            Impact assessment published
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Kill switch documented
+          </div>
+          <div class="gov-check">
+            <div class="check no">✗</div>
+            Stakeholder involvement
+          </div>
+        </div>
+        <div
+          class="gov-card"
+          style="border-top: 2px solid rgba(0, 206, 201, 0.3)"
+        >
+          <div class="cell-label">MedScan AI</div>
+          <h4>Governance Checklist</h4>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Dedicated responsible person
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Internal documentation
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Competence training program
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Complaint mechanism
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            External audit completed
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Impact assessment published
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Kill switch documented
+          </div>
+          <div class="gov-check">
+            <div class="check yes">✓</div>
+            Stakeholder involvement
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== LIMITATIONS ==================== -->
+      <div class="compare-section-title">
+        <span class="icon">⚠️</span>
+        <h2>Known Limitations</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="limit-compare">
+        <div
+          class="limit-box"
+          style="border-top: 2px solid rgba(108, 92, 231, 0.3)"
+        >
+          <div class="cell-label">Nova Assistant</div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Knowledge cutoff: Sept 2024
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>May hallucinate citations
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Not for medical/legal/financial advice
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Weaker in non-English languages
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Cannot access real-time data
+          </div>
+        </div>
+        <div
+          class="limit-box"
+          style="border-top: 2px solid rgba(0, 206, 201, 0.3)"
+        >
+          <div class="cell-label">MedScan AI</div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Only CT and MRI scans (no
+            X-ray/ultrasound)
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Validated for lung/liver tumors only
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Lower accuracy for pediatric patients
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Requires human radiologist review
+          </div>
+          <div class="limit-item">
+            <span class="li-icon">●</span>Not validated on scanner models before
+            2018
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== VERDICT ==================== -->
+      <div class="verdict-section">
+        <h2>📋 Comparison Summary</h2>
+        <p>A quick overview of which product leads in each dimension</p>
+
+        <div class="verdict-grid">
+          <div class="verdict-item">
+            <div class="v-label">Transparency</div>
+            <div class="v-winner b-wins">MedScan AI</div>
+          </div>
+          <div class="verdict-item">
+            <div class="v-label">Versatility</div>
+            <div class="v-winner a-wins">Nova Assistant</div>
+          </div>
+          <div class="verdict-item">
+            <div class="v-label">Bias Auditing</div>
+            <div class="v-winner b-wins">MedScan AI</div>
+          </div>
+          <div class="verdict-item">
+            <div class="v-label">Privacy</div>
+            <div class="v-winner b-wins">MedScan AI</div>
+          </div>
+          <div class="verdict-item">
+            <div class="v-label">Governance</div>
+            <div class="v-winner b-wins">MedScan AI</div>
+          </div>
+          <div class="verdict-item">
+            <div class="v-label">Accessibility</div>
+            <div class="v-winner a-wins">Nova Assistant</div>
+          </div>
+        </div>
+
+        <div class="verdict-note">
+          ⚠️ <strong>Important:</strong> These products serve fundamentally
+          different purposes. Comparing them isn't about picking a "winner" —
+          it's about understanding how transparency standards differ across use
+          cases. A medical AI SHOULD score higher on safety and bias auditing
+          because the stakes are higher. Always evaluate an AI product in the
+          context of what it's designed for.
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="compare-cta">
+        <a href="#" class="cta-btn primary"
+          >View Nova's Full Transparency Card →</a
+        >
+        <a href="#" class="cta-btn secondary"
+          >View MedScan's Full Transparency Card →</a
+        >
+      </div>
+    </div>
+
+    <footer>ClearAI — Because trust starts with transparency. · 2025</footer>
+  </body>
+</html>
